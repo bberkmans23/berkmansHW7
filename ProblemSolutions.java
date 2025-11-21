@@ -41,6 +41,23 @@ public class ProblemSolutions {
             // YOU CODE GOES HERE -- COMPLETE THE INNER LOOP OF THIS
             // "SELECTION SORT" ALGORITHM.
             // DO NOT FORGET TO ADD YOUR NAME / SECTION ABOVE
+             int selectedIndex = i;
+
+            for (int j = i + 1; j < n; j++) {
+                if (ascending) {
+                    if (values[j] < values[selectedIndex]) {
+                        selectedIndex = j;
+                    }
+                } else {
+                    if (values[j] > values[selectedIndex]) {
+                        selectedIndex = j;
+                    }
+                }
+            }
+
+            int temp = values[selectedIndex];
+            values[selectedIndex] = values[i];
+            values[i] = temp;
 
         }
 
@@ -101,8 +118,29 @@ public class ProblemSolutions {
         // ALLOCATES AUXILIARY DATA STRUCTURES (TEMPORARY ARRAYS). IT WILL BE EASIER
         // TO CODE WITH A SPACE COMPLEXITY OF O(N LOG N), WHICH IS FINE FOR PURPOSES
         // OF THIS PROGRAMMING EXERCISES.
+        int[] temp = new int[right - left + 1];
+        int i = left, j = mid + 1, t = 0;
 
-        return;
+        while (i <= mid && j <= right) {
+            boolean iDiv = arr[i] % k == 0;
+            boolean jDiv = arr[j] % k == 0;
+
+            if (iDiv && !jDiv) {
+                temp[t++] = arr[i++];
+            }
+            else if (!iDiv && jDiv) {
+                temp[t++] = arr[j++];
+            }
+            else {
+                temp[t++] = (arr[i] <= arr[j]) ? arr[i++] : arr[j++];
+            }
+        }
+
+        while (i <= mid) temp[t++] = arr[i++];
+        while (j <= right) temp[t++] = arr[j++];
+
+        for (int x = 0; x < temp.length; x++)
+            arr[left + x] = temp[x];
 
     }
 
@@ -155,9 +193,17 @@ public class ProblemSolutions {
     public static boolean asteroidsDestroyed(int mass, int[] asteroids) {
 
         // YOUR CODE GOES HERE, CONSIDER USING ARRAYS.SORT()
+         if (asteroids.length == 0) return true;
 
-        return false;
+        Arrays.sort(asteroids);
+        long currentMass = mass;
 
+        for (int a : asteroids) {
+            if (currentMass < a)
+                return false;
+            currentMass += a;
+        }
+        return true;            
     }
 
 
@@ -193,8 +239,19 @@ public class ProblemSolutions {
     public static int numRescueSleds(int[] people, int limit) {
 
         // YOUR CODE GOES HERE, CONSIDER USING ARRAYS.SORT
+        if (people.length == 0) return 0;
 
-        return -1;
+        Arrays.sort(people);
+        int left = 0, right = people.length - 1;
+        int sleds = 0;
+
+        while (left <= right) {
+            if (people[left] + people[right] <= limit)
+                left++;
+            right--;
+            sleds++;
+        }
+        return sleds;
 
     }
 
